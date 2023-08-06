@@ -8,6 +8,16 @@ const authorInput = document.querySelector("#author");
 const pagesInput = document.querySelector('#pages');
 const statusInput = document.querySelector("#status");
 const bookForm = document.querySelector('#bookForm');
+// const toggleReadBtn = document.querySelector('#toggleRead');
+
+library.addEventListener('click', (e) => {
+    
+    if (e.target.innerText === 'Toggle Read') {
+        findBookIndex(bookTitle);
+        let bookTitle = e.target.parentElement.children[0].innerText
+    }
+})
+
 // const addBookToLibraryButton = document.querySelector("#addBookButton");
 
 // addBookToLibraryButton.addEventListener("click", (e) => {
@@ -19,8 +29,10 @@ bookForm.addEventListener('submit', (e) => {
     e.preventDefault();
     addBookToLibrary();
     clearForm();
-    render()
+    buildBookView()
 })
+
+
 
 function Book(title, author, pages, status) {
     this.title = title;
@@ -72,10 +84,13 @@ function buildBookView() {
         const htmlBook = `
         <div class="card" style="width: 18rem">
         <div class="card-body">
-          <h5 class="card-title">${book.title}</h5>
-          <p class="card-text">
-            Author: ${book.author} <br> Pages: ${book.pages} <br> Status: ${book.status}
-          </p>
+          <h5 class="card-title text-center">${book.title}</h5>
+          <hr>
+          <div class="card-text">
+            <p class="author">Author: ${book.author} </p>
+            <p class="pages">Pages: ${book.pages} </p>
+             <p class="status">Status: ${book.status} </p>
+          </div>
           <br>
           <btn id="toggleRead" class="btn btn-primary">Toggle Read</btn>
           <btn id="delete" class="btn btn-danger">Delete</btn>
@@ -83,9 +98,22 @@ function buildBookView() {
       </div>
         `
 
-        library.insertAdjacentHTML('afterbegin',htmlBook)
+        library.insertAdjacentHTML('afterbegin', htmlBook)
+
+
+
     })
 
+}
+
+function findBookIndex(title) {
+    if (myLibrary.length === 0 || myLibrary === null) {
+        return;
+    }
+    for (book of myLibrary)
+        if (book.title === title) {
+            return myLibrary.indexOf(book);
+        }
 }
 
 render();
