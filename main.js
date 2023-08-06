@@ -8,6 +8,7 @@ const authorInput = document.querySelector("#author");
 const pagesInput = document.querySelector('#pages');
 const statusInput = document.querySelector("#status");
 const bookForm = document.querySelector('#bookForm');
+
 // const toggleReadBtn = document.querySelector('#toggleRead');
 
 library.addEventListener('click', (e) => {
@@ -17,22 +18,30 @@ library.addEventListener('click', (e) => {
         let index = findBookIndex(bookTitle);
         myLibrary.splice(index, 1)
         buildBookView()
+        updateLocalStorage();
     }
     
     if (e.target.innerText === 'Toggle Read') {
+        
+        let card = e.target.parentElement.parentElement
+        console.log(card)
         let bookTitle = e.target.parentElement.children[0].innerText
         let index = findBookIndex(bookTitle);
-        myLibrary[index].status = myLibrary[index].status == 'Read'? 'Not Read' : 'Read';
+        if(myLibrary[index].status == 'Read') {
+            card.classList.remove('read')
+            myLibrary[index].status = 'Not Read';
+           
+        } else {
+            card.classList.add('read')
+            myLibrary[index].status = 'Read';
+        }
+        
+        
         buildBookView()
+        updateLocalStorage();
     }
 })
 
-// const addBookToLibraryButton = document.querySelector("#addBookButton");
-
-// addBookToLibraryButton.addEventListener("click", (e) => {
-//   addBookToLibrary();
-//   clearForm();
-// });
 
 bookForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -73,6 +82,13 @@ function updateLocalStorage() {
     console.log(localStorage.getItem("myLibrary"));
 }
 
+function getLocalStorage() {
+    let library = localStorage.getItem('myLibrary');
+    if(library.length) {
+       myLibrary =  JSON.parse(library)
+    }
+}
+
 function clearForm() {
     titleInput.value = "";
     authorInput.value = "";
@@ -80,6 +96,7 @@ function clearForm() {
 }
 
 function render() {
+    getLocalStorage()
     if (myLibrary.length === 0) {
         myLibrary = defaultData;
     }
@@ -91,7 +108,7 @@ function buildBookView() {
     library.innerHTML = "";
     myLibrary.forEach((book) => {
         const htmlBook = `
-        <div class="card" style="width: 18rem">
+        <div class="card ${book.status === 'Read' ? 'read' : ''}" style="width: 18rem">
         <div class="card-body">
           <h5 class="card-title text-center">${book.title}</h5>
           <hr>
