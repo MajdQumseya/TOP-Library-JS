@@ -11,10 +11,19 @@ const bookForm = document.querySelector('#bookForm');
 // const toggleReadBtn = document.querySelector('#toggleRead');
 
 library.addEventListener('click', (e) => {
+
+    if (e.target.innerText === 'Delete') {
+        let bookTitle = e.target.parentElement.children[0].innerText
+        let index = findBookIndex(bookTitle);
+        myLibrary.splice(index, 1)
+        buildBookView()
+    }
     
     if (e.target.innerText === 'Toggle Read') {
-        findBookIndex(bookTitle);
         let bookTitle = e.target.parentElement.children[0].innerText
+        let index = findBookIndex(bookTitle);
+        myLibrary[index].status = myLibrary[index].status == 'Read'? 'Not Read' : 'Read';
+        buildBookView()
     }
 })
 
