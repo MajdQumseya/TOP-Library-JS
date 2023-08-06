@@ -7,7 +7,7 @@ const titleInput = document.querySelector("#title");
 const authorInput = document.querySelector("#author");
 const pagesInput = document.querySelector('#pages');
 const statusInput = document.querySelector("#status");
-const bookForm = document.querySelector('#bookForm');
+const bookForm = document.querySelector('#book-form');
 
 // const toggleReadBtn = document.querySelector('#toggleRead');
 
@@ -60,8 +60,8 @@ function Book(title, author, pages, status) {
 }
 
 function addBookToLibrary() {
-    if (titleInput.value.length === 0 || authorInput.value.length === 0) {
-        alert('Please enter a value for book title and book author');
+    if (titleInput.value.length === 0 || authorInput.value.length === 0 || pagesInput.value <= 0) {
+        alert('Please enter a valid value for book title, book author, and book pages');
         return;
     }
 
